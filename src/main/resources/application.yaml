@@ -1,0 +1,12 @@
+spring:
+  application:
+  name: engine
+server:
+  port: 8091
+
+services:
+  translate:
+    base-url: deep-translate1.p.rapidapi.com
+    path: /language/translate/v2
+    url: https://${services.translate.base-url}
+    api-key:
