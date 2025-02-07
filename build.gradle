@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.2'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id("com.google.cloud.tools.jib") version "3.4.2"
+
 }
 
 group = 'feral.translate'
@@ -9,7 +11,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(23)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -31,6 +33,21 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0'
 }
+
+jib {
+	from {
+		image = "eclipse-temurin:21-jdk"
+	}
+	containerizingMode = 'packaged'
+	container{
+		mainClass='feral.translate.engine.EngineApplication'
+	}
+	to {
+		image = "feral.servebeer.com:5000/engine:latest"
+		allowInsecureRegistries = true
+	}
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()
